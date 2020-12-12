@@ -1,0 +1,52 @@
+#app {
+  padding: 0 15px;
+  background-image: url('../images/background-light.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+#body {
+  min-height: 95vh;
+}
+
+#footer {
+  height: 5vh;
+}
+
+.link:hover {
+  cursor: pointer;
+}
+
+#notification-wrapper {
+  z-index: 1000;
+}
+
+.hide-tab-pane {
+  background-color: rgba(0, 0, 0, 0) !important;
+  border: none !important;
+}
+
+.flag-inline-right, .flag-inline-left {
+  font-size: 1.4rem !important;
+  vertical-align: middle;
+}
+
+@media only screen and (min-width: 768px) {
+  .phone {
+    display: none !important;
+  }
+
+  .desktop {
+    display: inherit !important;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .phone {
+    display: inherit !important;
+  }
+
+  .desktop {
+    display: none !important;
+  }
+}

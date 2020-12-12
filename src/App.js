@@ -1,25 +1,21 @@
-import logo from './logo.svg';
-import './App.css';
+import UserContextProvider from './context/UserContext';
+import NotificationContextProvider from './context/NotificationContext';
+import Routes from './Routes';
+import NotificationDisplay from './components/NotificationDisplay';
 
-function App() {
+import 'semantic-ui-css/semantic.min.css';
+import 'react-contexify/dist/ReactContexify.css';
+import 'flag-icon-css/sass/flag-icon.scss';
+import './styles/layout.scss';
+import './styles/images.scss';
+
+export default function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <NotificationContextProvider>
+      <NotificationDisplay />
+      <UserContextProvider>
+        <Routes />
+      </UserContextProvider>
+    </NotificationContextProvider>
   );
-}
-
-export default App;
+};

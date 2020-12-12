@@ -1,0 +1,26 @@
+.sot-coin, .sot-iron, .sot-bread, .sot-wheat, .sot-str {
+  width: 25px;
+  padding: 0px;
+  margin: 0px auto;
+  vertical-align: middle;
+}
+
+.sot-coin {
+  content: url('../images/assets/coin.svg');
+}
+
+.sot-iron {
+  content: url('../images/assets/iron.svg');
+}
+
+.sot-bread {
+  content: url('../images/assets/bread.svg');
+}
+
+.sot-wheat {
+  content: url('../images/assets/wheat.svg')
+}
+
+.sot-str {
+  content: url('../images/assets/strong.svg');
+}
