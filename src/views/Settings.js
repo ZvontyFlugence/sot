@@ -85,7 +85,7 @@ export default function Settings() {
                 <span>
                   Some settings can only be accessed through your Turmoil Studios Account.
                   <br />
-                  Manage <a href='http://localhost:8080'>Your Account</a> to view/edit those settings.
+                  Manage <a href='https://turmoil-studios-dev.herokuapp.com/'>Your Account</a> to view/edit those settings.
                 </span>
               )}
             />
