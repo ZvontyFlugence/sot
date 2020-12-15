@@ -19,11 +19,11 @@ export default function EditArticle() {
     if (!article) {
       SoTApi.getArticle(newsId, articleId).then(data => {
         if (data.article) {
-          setArticle(article);
+          setArticle(data.article);
         }
       });
     }
-  }, []);
+  }, [article, articleId, newsId]);
 
   const modules = {
     toolbar: [
@@ -61,12 +61,12 @@ export default function EditArticle() {
       },
     };
 
-    SoTApi.doNewsAction(id, payload).then(data => {
+    SoTApi.doNewsAction(newsId, payload).then(data => {
       if (data.success) {
         // display success notification
         setNotification({ type: 'success', header: 'Article Published' });
         // go to article page
-        history.push(`/newspaper/${id}/article/${data.articleId}`);
+        history.push(`/newspaper/${newsId}/article/${articleId}`);
       }
     })
     .catch(err => {
@@ -80,12 +80,12 @@ export default function EditArticle() {
       article,
     };
 
-    SoTApi.doNewsAction(id, payload).then(data => {
+    SoTApi.doNewsAction(newsId, payload).then(data => {
       if (data.success) {
         // display success notification
         setNotification({ type: 'success', header: 'Article Saved' });
         // go back to newspaper home
-        history.push(`/newspaper/${id}`);
+        history.push(`/newspaper/${newsId}`);
       }
     })
     .catch(err => {
