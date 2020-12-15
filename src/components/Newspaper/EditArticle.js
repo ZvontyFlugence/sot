@@ -46,7 +46,7 @@ export default function EditArticle() {
     setArticle(prev => ({ ...prev, title: value }));
   }
 
-  const handleEditorChange = (_, _, _, editor) => {
+  const handleEditorChange = (_, _delta, _source, editor) => {
     // setEditorValue(editor.getContents())
     setArticle(prev => ({ ...prev, content: editor.getContents() }));
   }
