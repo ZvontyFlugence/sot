@@ -19,13 +19,13 @@ import MailThread from './views/MailThread';
 import Market from './views/Market';
 import MyCompanies from './views/MyCompanies';
 import MyHome from './views/MyHome';
+import Newspaper from './views/Newspaper';
 import NotFound from './views/NotFound';
 import Profile from './views/Profile';
 import Rankings from './views/Rankings';
 import Register from './views/Register';
 import Settings from './views/Settings';
 import World from './views/World';
-
 
 export default function Routes() {
   const user = useGetUser();
@@ -59,6 +59,7 @@ export default function Routes() {
             <PrivateRoute exact path='/mail' component={Mail} />
             <PrivateRoute path='/mail/thread/:id' component={MailThread} />
             <PrivateRoute path='/market' component={Market} />
+            <PrivateRoute path='/newspaper' component={Newspaper} />
             <PrivateRoute path='/profile/:id' component={Profile} />
             <PrivateRoute path='/rankings' component={Rankings} />
             <PrivateRoute path='/settings' component={Settings} />

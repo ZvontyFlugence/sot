@@ -1,6 +1,6 @@
 import BaseApiService from './BaseApi';
 
-const BASE_URL = process.env.REACT_APP_SOT_API || 'http://localhost:5000/api';
+const BASE_URL = 'http://localhost:5000/api';
 let client = new BaseApiService({ baseURL: BASE_URL });
 
 let SoTApi = {};
@@ -41,6 +41,11 @@ SoTApi.doCompAction = (comp_id, payload) => client.post(`/companies/${comp_id}/a
 SoTApi.getCountries = () => client.get('/countries');
 SoTApi.getJobOffers = id => client.get(`/countries/${id}/jobs`);
 SoTApi.getProductOffers = id => client.get(`/countries/${id}/goods`);
+
+// News
+SoTApi.getNewspaper = id => client.get(`/news/${id}`);
+SoTApi.doNewsAction = (news_id, payload) => client.post(`/news/${news_id}/action`, payload);
+SoTApi.getArticle = (news_id, article_id) => client.get(`/news/${news_id}/article/${article_id}`);
 
 // Regions
 SoTApi.getRegion = id => client.get(`/regions/${id}`);

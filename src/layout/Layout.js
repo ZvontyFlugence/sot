@@ -52,7 +52,7 @@ export default function Layout(props) {
 
   const sidebar = (
     <Grid.Column className='desktop' computer={3}>
-      <Card fluid>
+      <Card>
         <Card.Content>
           <Card.Header>
             <Link to={`/profile/${user._id}`} style={{ color: 'initial', textDecoration: 'none' }}>
@@ -69,75 +69,75 @@ export default function Layout(props) {
             </Link>
           </Card.Header>
           <Grid>
-              <Grid.Column textAlign='center' width={16}>
-                <Label
-                  as='a'
-                  color={unreadAlerts > 0 ? 'red' : null}
-                  onClick={() => history.push('/alerts')}
-                >
-                  <Icon name='bell' /> {unreadAlerts}
-                </Label>
-                <Label
-                  as='a'
-                  color={unreadMessages > 0 ? 'red' : null}
-                  onClick={() => history.push('/mail')}
-                >
-                  <Icon name='mail' /> {unreadMessages}
-                </Label>
-              </Grid.Column>
-              <Grid.Column width={16}>
+            <Grid.Column textAlign='center' width={16}>
+              <Label
+                as='a'
+                color={unreadAlerts > 0 ? 'red' : null}
+                onClick={() => history.push('/alerts')}
+              >
+                <Icon name='bell' /> {unreadAlerts}
+              </Label>
+              <Label
+                as='a'
+                color={unreadMessages > 0 ? 'red' : null}
+                onClick={() => history.push('/mail')}
+              >
+                <Icon name='mail' /> {unreadMessages}
+              </Label>
+            </Grid.Column>
+            <Grid.Column width={16}>
               <Progress
-                  label='XP'
-                  color='orange'
-                  size='small'
-                  value={user.xp}
-                  total={getXpNeeded(user.level)}
-                  progress='ratio'
-                />
-                <Progress
-                  percent={user.health}
-                  label='Health'
-                  color='green'
-                  size='small'
-                  progress
-                  active
-                />
-                <Button
-                  fluid
-                  color='green'
-                  content='Heal'
-                  icon='heartbeat'
-                  size='tiny'
-                  onClick={handleHeal}
-                  disabled={(user && user.health === 100) || (user && new Date(user.canHeal) > new Date(Date.now()))}
-                />
-                <Menu vertical text>
-                  { regionInfo && (
-                    <Menu.Item>
-                      <span className='link' onClick={() => history.push(`/region/${user.location}`)}>
-                        {`${ regionInfo.name } `}
-                      </span>
-                      <span className='link' onClick={() => history.push(`/country/${regionInfo.owner._id}`)}>
-                        <i className={`flag-icon flag-icon-${regionInfo.owner.flag} flag-inline-right`} />
-                      </span>
-                    </Menu.Item>
-                  )}
-                  <Menu.Item style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <span>Gold</span>
-                    <span style={{ paddingRight: '15%' }}>
-                      { user.gold.toFixed(2) }&nbsp;<Image src={gold} avatar />
+                label='XP'
+                color='orange'
+                size='small'
+                value={user.xp}
+                total={getXpNeeded(user.level)}
+                progress='ratio'
+              />
+              <Progress
+                percent={user.health}
+                label='Health'
+                color='green'
+                size='small'
+                progress
+                active
+              />
+              <Button
+                fluid
+                color='green'
+                content='Heal'
+                icon='heartbeat'
+                size='tiny'
+                onClick={handleHeal}
+                disabled={(user && user.health === 100) || (user && new Date(user.canHeal) > new Date(Date.now()))}
+              />
+              <Menu vertical text>
+                { regionInfo && (
+                  <Menu.Item>
+                    <span className='link' onClick={() => history.push(`/region/${user.location}`)}>
+                      {`${ regionInfo.name } `}
+                    </span>
+                    <span className='link' onClick={() => history.push(`/country/${regionInfo.owner._id}`)}>
+                      <i className={`flag-icon flag-icon-${regionInfo.owner.flag} flag-inline-right`} />
                     </span>
                   </Menu.Item>
-                  { walletInfo && regionInfo && (
-                    <Menu.Item style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <span>{ walletInfo.current.currency }</span>
-                      <span style={{ float: 'right', paddingRight: '15%' }}>
-                        { walletInfo.current.amount.toFixed(2) }&nbsp;&nbsp;<span className={`flag-icon flag-icon-${regionInfo.owner.flag} flag-inline-right`}></span>
-                      </span>
-                    </Menu.Item>
-                  )}
-                </Menu>
-              </Grid.Column>
+                )}
+                <Menu.Item style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <span>Gold</span>
+                  <span style={{ paddingRight: '15%' }}>
+                    { user.gold.toFixed(2) }&nbsp;<Image src={gold} avatar />
+                  </span>
+                </Menu.Item>
+                { walletInfo && regionInfo && (
+                  <Menu.Item style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <span>{ walletInfo.current.currency }</span>
+                    <span style={{ float: 'right', paddingRight: '15%' }}>
+                      { walletInfo.current.amount.toFixed(2) }&nbsp;&nbsp;<span className={`flag-icon flag-icon-${regionInfo.owner.flag} flag-inline-right`}></span>
+                    </span>
+                  </Menu.Item>
+                )}
+              </Menu>
+            </Grid.Column>
           </Grid>
         </Card.Content>
       </Card>

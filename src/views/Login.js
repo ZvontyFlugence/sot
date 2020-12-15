@@ -29,11 +29,17 @@ export default function Login() {
           SoTApi.setToken(data.token);
           setUser(data.user);
           setNotification({ type: 'success', header: 'Login Successful', content: `Welcome, ${data.user.displayName}` })
-        } else {
-          setNotification({ type: 'error', header: 'Login Failed', content: 'Invalid Credentials' });
         }
       })
-      .then(() => history.push('/dashboard'));
+      .then(() => history.push('/dashboard'))
+      .catch(error => {
+        if (error && error.response) {
+          let data = error.response.data;
+          setNotification({ type: 'error', header: 'Login Failed', content: data.error });
+        } else {
+          setNotification({ type: 'error', header: 'Login Failed', content: 'Server Error' });
+        }
+      });
   }
 
   return (
