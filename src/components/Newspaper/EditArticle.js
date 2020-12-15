@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 import ReactQuill from 'react-quill';
 
 import { useSetNotification } from '../../context/NotificationContext';
@@ -9,14 +9,21 @@ import { Button, Form, Segment } from 'semantic-ui-react';
 
 import 'react-quill/dist/quill.snow.css';
 
-const EMPTY_DELTA = { ops: [] };
-
-export default function EditArticle(props) {
-  const id = props.match.params.id;
+export default function EditArticle() {
+  const { newsId, articleId } = useParams();
   const history = useHistory();
   const setNotification = useSetNotification();
-  const [editorValue, setEditorValue] = useState(EMPTY_DELTA);
-  const [articleName, setArticleName] = useState('');
+  const [article, setArticle] = useState(null);
+
+  useEffect(() => {
+    if (!article) {
+      SoTApi.getArticle(newsId, articleId).then(data => {
+        if (data.article) {
+          setArticle(article);
+        }
+      });
+    }
+  }, []);
 
   const modules = {
     toolbar: [
@@ -35,20 +42,20 @@ export default function EditArticle(props) {
     'link', 'image'
   ];
 
-  const handleNameChange = (e, data) => {
-    setArticleName(e.target.value);
+  const handleNameChange = (_, { value }) => {
+    setArticle(prev => ({ ...prev, title: value }));
   }
 
-  const handleEditorChange = (value, delta, source, editor) => {
-    setEditorValue(editor.getContents())
+  const handleEditorChange = (_, _, _, editor) => {
+    // setEditorValue(editor.getContents())
+    setArticle(prev => ({ ...prev, content: editor.getContents() }));
   }
 
   const handlePublish = () => {
     let payload = {
       action: 'publish_draft',
       article: {
-        title: articleName,
-        content: editorValue,
+        ...article,
         published: true,
         publishDate: new Date(Date.now()),
       },
@@ -70,11 +77,7 @@ export default function EditArticle(props) {
   const handleSave = () => {
     let payload = {
       action: 'save_draft',
-      article: {
-        title: articleName,
-        content: editorValue,
-        published: false,
-      },
+      article,
     };
 
     SoTApi.doNewsAction(id, payload).then(data => {
@@ -90,11 +93,11 @@ export default function EditArticle(props) {
     });
   }
 
-  return (
-      <div id='create-article'>
+  return article && (
+      <div id='edit-article'>
         <Segment>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <h1>Write Article</h1>
+            <h1>Edit Article</h1>
             <div>
               <Button compact color='blue' content='Publish' onClick={handlePublish} />
               <Button compact color='green' content='Save' onClick={handleSave} />
@@ -106,7 +109,7 @@ export default function EditArticle(props) {
                 fluid
                 type='text'
                 label='Article Name'
-                value={articleName}
+                value={article.title}
                 onChange={handleNameChange}
               />
             </Form>
@@ -116,7 +119,7 @@ export default function EditArticle(props) {
               theme='snow'
               modules={modules}
               formats={formats}
-              value={editorValue}
+              value={article.content}
               style={{ height: '55vh', overflowY: 'auto' }}
               onChange={handleEditorChange}
             />

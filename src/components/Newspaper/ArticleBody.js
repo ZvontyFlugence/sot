@@ -27,7 +27,7 @@ export default function ArticleBody({ article }) {
 
             <Form reply>
               <Form.TextArea value={replyText} onChange={(_, {value}) => setReplyText(value)} />
-              <Button content='Add Reply' labelPosition='left' icon='edit' primary />
+              <Button content='Add Reply' labelPosition='left' icon='edit' primary onClick={handleReply} />
             </Form>
 
             {

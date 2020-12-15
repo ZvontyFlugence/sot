@@ -7,7 +7,7 @@ export default function ArticleHead({ news, article }) {
 
   const handleLike = () => {}
 
-  const handleSubsribe = () => {}
+  const handleSubscribe = () => {}
 
   return article && news && (
     <Segment style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -30,7 +30,7 @@ export default function ArticleHead({ news, article }) {
           <Label as='a' basic color='red' pointing='right'>
             { (article.likes && article.likes.length) || 0}
           </Label>
-          <Button compact color='red'>
+          <Button compact color='red' onClick={handleLike}>
             <Icon name='heart' />
             Like
           </Button>          
@@ -39,7 +39,7 @@ export default function ArticleHead({ news, article }) {
           <Label as='a' basic color='blue' pointing='right'>
             { news.subscribers.length || 0}
           </Label>
-          <Button compact color='blue'>
+          <Button compact color='blue' onClick={handleSubscribe}>
             <Icon name='feed' />
             Subscribe
           </Button>
