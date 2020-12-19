@@ -1,4 +1,5 @@
 import { useHistory } from 'react-router-dom';
+import { format } from 'date-fns';
 
 import { Button, Icon, Image, Item, Label, Segment } from 'semantic-ui-react';
 
@@ -15,7 +16,7 @@ export default function ArticleHead({ news, article }) {
           <Item.Content>
             <Item.Header style={{ fontWeight: 'bold', fontSize: '2.0rem' }}>{ article.title }</Item.Header>
             <Item.Meta style={{ marginTop: '10px' }}>
-              Published on: {article.publishDate || 'XX-XXX-XXXX'}
+              Published on: { format(new Date(article.publishDate), 'LL/dd/yyyy') }
             </Item.Meta>
             <Item.Description style={{ marginTop: '10px' }}>
               <Label className='link' image onClick={() => history.push(`/newspaper/${news._id}`)}>

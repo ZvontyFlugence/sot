@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import { format } from 'date-fns';
 
 import { Button, Grid, List, Message, Pagination, Segment } from 'semantic-ui-react';
 
@@ -63,7 +64,7 @@ export default function NewsArticles({ news }) {
                         </List.Header>
                         {
                           article.published && (
-                            <List.Description>{ article.publishDate }</List.Description>
+                            <List.Description>{ format(new Date(article.publishDate), 'LL/dd/yyyy') }</List.Description>
                           )
                         }
                       </List.Content>

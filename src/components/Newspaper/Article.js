@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
-import { Redirect } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 
 import ArticleHead from './ArticleHead';
 import ArticleBody from './ArticleBody';
 import SoTApi from '../../services/SoTApi';
 
-export default function Article(props) {
-  const newsId = props.match.params.newsId;
-  const articleId = props.match.params.articleId;
+export default function Article() {
+  const history = useHistory();
+  const { newsId, articleId } = useParams();
   const [newspaper, setNewspaper] = useState(null);
   const [article, setArticle] = useState(null);
 
@@ -16,6 +16,9 @@ export default function Article(props) {
       SoTApi.getArticle(newsId, articleId)
         .then(data => {
           if (data.article) {
+            if (!data.article.published) {
+              history.push(`/newspaper/${newsId}/article/${articleId}/edit`);
+            }
             setArticle(data.article);
           }
         });
@@ -26,14 +29,12 @@ export default function Article(props) {
         }
       });
     }
-  }, [newsId, articleId]);
+  }, [newsId, articleId, history]);
 
-  return article && article.published ? (
+  return article && article.published && (
     <>
       <ArticleHead news={newspaper} article={article} />
       <ArticleBody article={article} />
     </>
-  ) : (
-    <Redirect to={`/newspaper/${newspaper && newspaper._id}/article/${article.id}/edit`} />
   );
 }

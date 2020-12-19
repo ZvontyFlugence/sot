@@ -1,6 +1,6 @@
 import BaseApiService from './BaseApi';
 
-const BASE_URL = 'http://localhost:5000/api';
+const BASE_URL = process.env.REACT_APP_SOT_API || 'http://localhost:5000/api';
 let client = new BaseApiService({ baseURL: BASE_URL });
 
 let SoTApi = {};

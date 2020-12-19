@@ -15,7 +15,7 @@ export default function Newspaper() {
           <Route exact path='/newspaper' component={CreateNewspaper} />
           <Route exact path='/newspaper/:id' component={NewsHome} />
           <Route path='/newspaper/:id/write' component={WriteArticle} />
-          <Route path='/newspaper/:newsId/article/:articleId' component={Article} />
+          <Route exact path='/newspaper/:newsId/article/:articleId' component={Article} />
           <Route path='/newspaper/:newsId/article/:articleId/edit' component={EditArticle} />  
         </Switch>
       </div>

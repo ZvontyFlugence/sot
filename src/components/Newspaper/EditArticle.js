@@ -14,16 +14,18 @@ export default function EditArticle() {
   const history = useHistory();
   const setNotification = useSetNotification();
   const [article, setArticle] = useState(null);
+  const [reload, setReload] = useState(true);
 
   useEffect(() => {
-    if (!article) {
+    if (!article && reload) {
       SoTApi.getArticle(newsId, articleId).then(data => {
         if (data.article) {
           setArticle(data.article);
+          setReload(false);
         }
       });
     }
-  }, [article, articleId, newsId]);
+  }, [article, articleId, newsId, reload]);
 
   const modules = {
     toolbar: [
@@ -47,13 +49,12 @@ export default function EditArticle() {
   }
 
   const handleEditorChange = (_, _delta, _source, editor) => {
-    // setEditorValue(editor.getContents())
     setArticle(prev => ({ ...prev, content: editor.getContents() }));
   }
 
   const handlePublish = () => {
     let payload = {
-      action: 'publish_draft',
+      action: 'publish_article',
       article: {
         ...article,
         published: true,
@@ -63,9 +64,7 @@ export default function EditArticle() {
 
     SoTApi.doNewsAction(newsId, payload).then(data => {
       if (data.success) {
-        // display success notification
         setNotification({ type: 'success', header: 'Article Published' });
-        // go to article page
         history.push(`/newspaper/${newsId}/article/${articleId}`);
       }
     })
@@ -76,15 +75,13 @@ export default function EditArticle() {
 
   const handleSave = () => {
     let payload = {
-      action: 'save_draft',
+      action: 'edit_article',
       article,
     };
 
     SoTApi.doNewsAction(newsId, payload).then(data => {
       if (data.success) {
-        // display success notification
         setNotification({ type: 'success', header: 'Article Saved' });
-        // go back to newspaper home
         history.push(`/newspaper/${newsId}`);
       }
     })
