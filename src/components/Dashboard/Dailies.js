@@ -35,7 +35,7 @@ export default function Dailies() {
   }
 
   return (
-    <Segment raised compact>
+    <Segment raised>
       <Grid>
         <Grid.Row style={{ paddingLeft: '10%' }}>
           <span style={{ fontSize: '1.5rem' }}>Daily Tasks</span>

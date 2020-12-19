@@ -7,6 +7,7 @@ import { Accordion, Card, Icon, Image } from 'semantic-ui-react';
 export default function ProfileActivities(props) {
   const { profile } = props;
   const [job, setJob] = useState(null);
+  const [newspaper, setNewspaper] = useState(null);
   const [active, setActive] = useState(-1);
 
   useEffect(() => {
@@ -14,6 +15,14 @@ export default function ProfileActivities(props) {
       SoTApi.getCompany(profile.job).then(data => {
         if (data.company) {
           setJob(data.company);
+        }
+      });
+    }
+
+    if (profile && profile.newspaper > 0) {
+      SoTApi.getNewspaper(profile.newspaper).then(data => {
+        if (data.news) {
+          setNewspaper(data.news);
         }
       });
     }
@@ -80,7 +89,18 @@ export default function ProfileActivities(props) {
         Newspaper
       </Accordion.Title>
       <Accordion.Content active={active === 2}>
-
+        {
+          newspaper && (
+            <div>
+              { newspaper.name }
+              <Image src={newspaper.image} alt='' size='tiny' />
+              <br />
+              {
+                newspaper.author === profile._id ? 'Author' : 'Staff'
+              }
+            </div>
+          )
+        }
       </Accordion.Content>
     </>
   );
@@ -97,16 +117,18 @@ export default function ProfileActivities(props) {
         Job
       </Accordion.Title>
       <Accordion.Content active={active === 3}>
-      {job && (
-        <div>
-          { job.name }
-          <Image src={job.image} alt='' size='tiny' />
-          <br />
-          {
-            job.ceo._id === profile._id ? 'CEO' : job.employees.find(emp => emp.userId === profile._id).title
-          }
-        </div>
-      )}
+      {
+        job && (
+          <div>
+            { job.name }
+            <Image src={job.image} alt='' size='tiny' />
+            <br />
+            {
+              job.ceo._id === profile._id ? 'CEO' : job.employees.find(emp => emp.userId === profile._id).title
+            }
+          </div>
+        )
+      }
       </Accordion.Content>
     </>
   );

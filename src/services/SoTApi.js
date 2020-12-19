@@ -41,6 +41,7 @@ SoTApi.doCompAction = (comp_id, payload) => client.post(`/companies/${comp_id}/a
 SoTApi.getCountries = () => client.get('/countries');
 SoTApi.getJobOffers = id => client.get(`/countries/${id}/jobs`);
 SoTApi.getProductOffers = id => client.get(`/countries/${id}/goods`);
+SoTApi.getCountryArticles = id => client.get(`/countries/${id}/articles`);
 
 // News
 SoTApi.getNewspaper = id => client.get(`/news/${id}`);

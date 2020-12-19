@@ -10,30 +10,35 @@ export default function Article() {
   const { newsId, articleId } = useParams();
   const [newspaper, setNewspaper] = useState(null);
   const [article, setArticle] = useState(null);
+  const [reload, setReload] = useState(true);
 
   useEffect(() => {
-    if (newsId && articleId) {
-      SoTApi.getArticle(newsId, articleId)
-        .then(data => {
-          if (data.article) {
-            if (!data.article.published) {
-              history.push(`/newspaper/${newsId}/article/${articleId}/edit`);
+    if (reload) {
+      if (newsId && articleId) {
+        SoTApi.getArticle(newsId, articleId)
+          .then(data => {
+            if (data.article) {
+              if (!data.article.published) {
+                history.push(`/newspaper/${newsId}/article/${articleId}/edit`);
+              }
+              setArticle(data.article);
             }
-            setArticle(data.article);
+          });
+        
+        SoTApi.getNewspaper(newsId).then(data => {
+          if (data.news) {
+            setNewspaper(data.news);
           }
         });
-      
-      SoTApi.getNewspaper(newsId).then(data => {
-        if (data.news) {
-          setNewspaper(data.news);
-        }
-      });
+
+        setReload(false);
+      }
     }
-  }, [newsId, articleId, history]);
+  }, [newsId, articleId, history, reload]);
 
   return article && article.published && (
     <>
-      <ArticleHead news={newspaper} article={article} />
+      <ArticleHead news={newspaper} article={article} reload={(bool) => setReload(bool)} />
       <ArticleBody article={article} />
     </>
   );

@@ -9,7 +9,7 @@ export default function ProfileDetails(props) {
   const { profile } = props;
 
   const friends = profile.friends.length > 0 ? (
-    <Card.Group itemsPerRow={5} style={{ padding: '0 1vw'}}>
+    <Card.Group itemsPerRow={5} style={{ padding: '0 1vw', display: 'flex', gap: 15 }}>
       {profile.friends.map((friend, index) => (
         <FriendCard index={index} friendId={friend} />
       ))}

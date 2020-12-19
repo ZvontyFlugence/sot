@@ -1,14 +1,47 @@
 import { useHistory } from 'react-router-dom';
 import { format } from 'date-fns';
 
+import { useSetNotification } from '../../context/NotificationContext';
+import SoTApi from '../../services/SoTApi';
+
 import { Button, Icon, Image, Item, Label, Segment } from 'semantic-ui-react';
 
-export default function ArticleHead({ news, article }) {
+export default function ArticleHead({ news, article, reload }) {
   const history = useHistory();
+  const setNotification = useSetNotification();
 
-  const handleLike = () => {}
+  const handleLike = () => {
+    let payload = {
+      action: 'like_article',
+      newsId: news && news._id,
+      articleId: article && article.id,
+    };
 
-  const handleSubscribe = () => {}
+    SoTApi.doAction(payload).then(data => {
+      if (data.success) {
+        setNotification({ type: 'success', header: 'Article Liked' });
+        reload(true);
+      } else {
+        setNotification({ type: 'error', header: data.error });
+      }
+    });
+  }
+
+  const handleSubscribe = () => {
+    let payload = {
+      action: 'sub_news',
+      newsId: news && news._id,
+    };
+
+    SoTApi.doAction(payload).then(data => {
+      if (data.success) {
+        setNotification({ type: 'success', header: 'Subscribed to Newspaper!' });
+        reload(true);
+      } else {
+        setNotification({ type: 'error', header: data.error });
+      }
+    })
+  }
 
   return article && news && (
     <Segment style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
