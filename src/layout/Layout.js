@@ -51,7 +51,7 @@ export default function Layout(props) {
   }
 
   const sidebar = (
-    <Grid.Column className='desktop' computer={3}>
+    <Grid.Column computer={12}>
       <Card>
         <Card.Content>
           <Card.Header>
@@ -147,7 +147,11 @@ export default function Layout(props) {
   return (
     <div style={{ paddingBottom: '1vh' }}>
       <Grid id='layout' centered>
-        {sidebar}
+        <Grid.Column className='desktop' computer={4}>
+          <Grid centered>
+            {sidebar}
+          </Grid>
+        </Grid.Column>
         <Grid.Column mobile={16} computer={11}>
           {props.children}
         </Grid.Column>

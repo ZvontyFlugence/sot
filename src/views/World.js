@@ -87,16 +87,21 @@ export default function World() {
               setNotification({
                 type: 'info',
                 header: (
-                  <span>
+                  <span style={{ fontSize: '1.25rem' }}>
                     { region.name }
                     &nbsp;
-                    <i className={`flag-icon flag-icon-${region.owner.flag_code}`} style={{ float: 'right', boxShadow: 'none' }} />
+                    <i className={`flag-icon flag-icon-${region.owner.flag_code}`} />
                   </span>
                 ),
                 content: (
                   <div style={{ margin: '0 auto' }}>
                     <p>
-                      Core <i className={`flag-icon flag-icon-${region.owner.flag_code}`} style={{ boxShadow: 'none' }} />
+                      Core
+                      <span style={{ float: 'right' }}>
+                        { region.owner.nick }
+                        &nbsp;
+                        <i className={`flag-icon flag-icon-${region.owner.flag_code}`} />
+                      </span>                      
                     </p>
                     <p>
                       Resource: { getResource(region.resource) }

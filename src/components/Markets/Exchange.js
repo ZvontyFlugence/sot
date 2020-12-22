@@ -5,7 +5,17 @@ import { useSetNotification } from '../../context/NotificationContext';
 import { useGetUser, useLoadUser } from '../../context/UserContext';
 import SoTApi from '../../services/SoTApi';
 
-import { Button, Dropdown, Form, Grid, Image, Input, Modal, Segment, Table } from 'semantic-ui-react';
+import {
+  Button,
+  Dropdown,
+  Form,
+  Grid,
+  Image,
+  Input,
+  Modal,
+  Segment,
+  Table,
+} from 'semantic-ui-react';
 
 export default function Exchange() {
   const user = useGetUser();
@@ -16,6 +26,7 @@ export default function Exchange() {
   const [country, setCountry] = useState(null);
   const [countries, setCountries] = useState([]);
   const [showCreateOfferModal, setShowCreateOfferModal] = useState(false);
+  const [showRemoveOfferModal, setShowRemoveOfferModal] = useState(false);
   const [selected, setSelected] = useState(null);
   const [purchaseAmount, setPurchaseAmount] = useState(1);
 
@@ -126,6 +137,13 @@ export default function Exchange() {
                 content='Create Offer'
                 onClick={() => setShowCreateOfferModal(true)}
               />
+              <Button
+                compact
+                color='red'
+                icon='times'
+                content='Remove Offer'
+                onClick={() => setShowRemoveOfferModal(true)}
+              />
             </div>
           </Segment>
         </Grid.Column>
@@ -220,6 +238,15 @@ export default function Exchange() {
         active={active}
         selected={selected}
         onClose={() => setShowCreateOfferModal(false)}
+      />
+      <RemoveExchangeOfferModal
+        show={showRemoveOfferModal}
+        active={active}
+        selected={selected}
+        setNotification={setNotification}
+        user={user}
+        loadUser={loadUser}
+        onClose={() => setShowRemoveOfferModal(false)}
       />
     </div>
   );
@@ -330,5 +357,145 @@ function CreateExchangeOfferModal(props) {
         <Button content='Cancel' onClick={props.onClose} />
       </Modal.Actions>
     </Modal>
+  );
+}
+
+function RemoveExchangeOfferModal(props) {
+  const [offers, setOffers] = useState([]);
+  const [offersToRemove, setOffersToRemove] = useState([]);
+
+  useEffect(() => {
+    if (props.selected && props.user) {
+      setOffers(props.selected.exchangeOffers.filter(offer => {
+        return offer.mode === props.active && offer.seller.id === props.user._id;
+      }));
+    }
+  }, [props.selected, props.user, props.active]);
+
+  const getCCText = () => {
+    return props.selected ? props.selected.currency : 'CC';
+  }
+
+  const getHeaderText = () => {
+    if (props.active === 0) {
+      return `Gold to ${getCCText()}`;
+    }
+
+    return `${getCCText()} to Gold`
+  }
+
+  const handleClick = offerId => {
+    let index = offersToRemove.findIndex(offer => offer === offerId);
+    
+    if (index !== -1) {
+      setOffersToRemove(curr => {
+        curr.splice(index, 1);
+        return curr;
+      });
+    } else {
+      setOffersToRemove(curr => [...curr, offerId]);
+    }
+  }
+
+  const removeOffers = () => {
+    let payload = {
+      action: 'remove_exchange_offer',
+      country: props.selected._id,
+      offersToRemove,
+    };
+
+    SoTApi.doAction(payload).then(data => {
+      if (data.success) {
+        props.setNotification({ type: 'success', header: 'Offers Removed' });
+        props.loadUser();
+      }
+    });
+  }
+
+  return (
+    <Modal size='tiny' open={props.show} onClose={props.onClose}>
+      <Modal.Header>Remove Exchange Offer ({getHeaderText()})</Modal.Header>
+      <Modal.Content>
+        <Table basic='very' selectable>
+          <Table.Header>
+            <Table.Row>
+              <Table.HeaderCell>Amount</Table.HeaderCell>
+              <Table.HeaderCell>Exchange Rate</Table.HeaderCell>
+            </Table.Row>
+          </Table.Header>
+          <Table.Body>
+            {
+              offers.map((offer, idx) => (
+                <RemoveOfferRow
+                  offer={offer}
+                  idx={idx}
+                  active={props.active}
+                  selected={props.selected}
+                  offersToRemove={offersToRemove}
+                  onClick={() => handleClick(offer.id)}
+                />
+              ))
+            }
+          </Table.Body>
+        </Table>
+      </Modal.Content>
+      <Modal.Actions>
+        <Button color='red' content='Remove Selected' onClick={removeOffers} />
+        <Button content='Close' onClick={props.onClose} />
+      </Modal.Actions>
+    </Modal>
+  );
+}
+
+function RemoveOfferRow(props) {
+  const { idx, offer } = props;
+  const [isError, setIsError] = useState(props.offersToRemove && props.offersToRemove.includes(offer.id));
+
+  const handleClick = () => {
+    props.onClick();
+    setIsError(curr => !curr);
+  }
+
+  return props.offersToRemove && offer && (
+    <Table.Row key={idx} error={isError} onClick={handleClick}>
+      <Table.Cell>
+        { offer.sellAmount.toFixed(2) }
+        &nbsp;
+        {
+          props.active === 0 ? (
+            <i className='sot-coin' />
+          ) : (
+            <span>
+              { props.selected.currency }
+              &nbsp;
+              <i className={`flag-icon flag-icon-${props.selected.flag_code} flag-inline-right`} />
+            </span>
+          )
+        }
+      </Table.Cell>
+      <Table.Cell>
+        { offer.exchangeRate.toFixed(2) }
+        &nbsp;
+        {
+          props.active === 0 ? (
+            <span>
+              { props.selected.currency }
+              &nbsp;
+              <i className={`flag-icon flag-icon-${props.selected.flag_code} flag-inline-right`} />
+              &nbsp;
+              per 1.00 <i className='sot-coin' />
+            </span>
+          ) : (
+            <span>
+              <i className='sot-coin' />
+              &nbsp;                            
+              per 1.00 { props.selected.currency }
+              &nbsp;
+              <i className={`flag-icon flag-icon-${props.selected.flag_code} flag-inline-right`} />
+            </span>
+          )
+        }
+      </Table.Cell>
+    </Table.Row>
   );
 }

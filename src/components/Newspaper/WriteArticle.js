@@ -92,7 +92,7 @@ export default function WriteArticle(props) {
 
   return (
       <div id='create-article'>
-        <Segment>
+        <Segment style={{ height: '100%' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <h1>Write Article</h1>
             <div>
@@ -117,7 +117,6 @@ export default function WriteArticle(props) {
               modules={modules}
               formats={formats}
               value={editorValue}
-              style={{ height: '55vh', overflowY: 'auto' }}
               onChange={handleEditorChange}
             />
           </div>          

@@ -25,6 +25,10 @@ const constants = {
     { text: 'Iron', value: 2, item: 0, css: 'sot-iron' },
     { text: 'Bread', value: 3, item: 2, css: 'sot-bread' },
   ],
+  CURRENCY_IMAGE: {
+      'Gold': 'sot-coin',
+      'USD': 'flag-icon flag-icon-us',
+  },
   MAP_STYLE: [
     {
         "featureType": "all",

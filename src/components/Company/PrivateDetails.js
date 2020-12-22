@@ -4,7 +4,7 @@ import Inventory from '../Shared/Inventory';
 import constants from '../../util/constants';
 import SoTApi from '../../services/SoTApi';
 
-import { Button, Dropdown, Grid, Image, Input, List, Message, Modal, Statistic, Tab } from 'semantic-ui-react'
+import { Button, Dropdown, Form, Grid, Image, Input, List, Message, Modal, Statistic, Tab } from 'semantic-ui-react'
 
 export default function PrivateDetails(props) {
   const { ceo, compId, employees, inventory, funds, loadUser, setNotification, setReload, gold } = props;
@@ -16,6 +16,8 @@ export default function PrivateDetails(props) {
   const [title, setTitle] = useState('');
   const [numOffers, setNumOffers] = useState(1);
   const [wage, setWage] = useState(1);
+  const [selectedEmployee, setSelectedEmployee] = useState(-1);
+  const [showEditEmpModal, setShowEditEmpModal] = useState(false);
 
   const panes=[
     { menuItem: 'Inventory', render: () => inventoryTab },
@@ -98,6 +100,11 @@ export default function PrivateDetails(props) {
     return employeeId === ceo._id ? 'CEO' : empTitle
   }
 
+  const handleEditEmployee = employee => {
+    setSelectedEmployee(employee);
+    setShowEditEmpModal(true);
+  }
+
   const CreateProductOfferModal = () => {
     return (
       <Modal size='mini' open={showCreateProduct} onClose={() => setShowCreateProduct(false)}>
@@ -177,6 +184,72 @@ export default function PrivateDetails(props) {
     );
   }
 
+  const EditEmployeeModal = () => {
+    const [empWage, setEmpWage] = useState(selectedEmployee.wage);
+    const [empTitle, setEmpTitle] = useState(selectedEmployee.title);
+
+    const handleChangeTitle = (_, { value }) => setEmpTitle(value);
+  
+    const handleChangeWage = (_, { value }) => setEmpWage(Number.parseFloat(value).toFixed(2));
+
+    const fireEmployee = () => {
+      let payload = {
+        action: 'fire_employee',
+        employeeId: selectedEmployee._id,
+      };
+
+      SoTApi.doCompAction(payload).then(data => {
+        if (data.success) {
+          setNotification({ type: 'success', header: 'Fired Employee', content: 'The fired employee has been notified.' });
+          setReload(true);
+        } else {
+          setNotification({ type: 'error', header: data.error });
+        }
+      });
+    }
+
+    const editEmployee = () => {
+      let payload = {
+        action: 'edit_employee',
+        employeeData: {
+          title: empTitle === selectedEmployee.title ? undefined : empTitle,
+          wage: empWage === selectedEmployee.wage ? undefined : empWage,
+          userId: selectedEmployee._id,
+        },
+      };
+
+      SoTApi.doCompAction(payload).then(data => {
+        if (data.success) {
+          setNotification({ type: 'success', header: 'Employee Edited!', content: 'The Employee has been notified' });
+          setReload(true);
+        } else {
+          setNotification({ type: 'error', header: data.error });
+        }
+      });
+    }
+
+    return (
+      <Modal size='tiny' open={showEditEmpModal} onClose={() => setShowEditEmpModal(false)}>
+        <Modal.Header>Edit Employee: { selectedEmployee.displayName }</Modal.Header>
+        <Modal.Content>
+          <Form>
+            <Form.Input label='Employee Title' type='text' value={empTitle} onChange={handleChangeTitle} />
+            <Form.Input label='Employee Wage' type='number' min={1} step={0.01} value={empWage} onChange={handleChangeWage} />
+          </Form>
+        </Modal.Content>
+        <Modal.Actions>
+          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <Button color='red' content='Fire' onClick={fireEmployee} />
+            <div>
+              <Button color='blue' content='Edit' onClick={editEmployee} />
+              <Button content='Cancel' onClick={() => setShowEditEmpModal(false)} />
+            </div>
+          </div>          
+        </Modal.Actions>
+      </Modal>
+    );
+  }
+
   const inventoryTab = (
     <Tab.Pane>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -220,7 +293,7 @@ export default function PrivateDetails(props) {
             <List>
               {employees.map((emp, i) => {
                 return (
-                  <List.Item key={i} style={{ display: 'flex', alignItems: 'center' }}>
+                  <List.Item key={i} style={{ display: 'flex', alignItems: 'center' }} onClick={() => handleEditEmployee(emp)}>
                     <Image src={emp.image} alt='' size='mini' circular />
                     <List.Content>
                       <List.Header>{emp.displayName}</List.Header>
@@ -231,6 +304,7 @@ export default function PrivateDetails(props) {
               })}
             </List>
           </Grid.Column>
+          <EditEmployeeModal />
         </Grid>
       ) : (
         <Message

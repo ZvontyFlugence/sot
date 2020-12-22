@@ -1,12 +1,14 @@
 import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
+import { useSetNotification } from '../../context/NotificationContext';
 import SoTApi from '../../services/SoTApi';
 
 import { Button, Grid, Image, Modal, Segment, Statistic } from "semantic-ui-react";
 
-export default function NewsHeader({ news, user }) {
+export default function NewsHeader({ news, user, reload }) {
   const history = useHistory();
+  const setNotification = useSetNotification();
   const [author, setAuthor] = useState(null);
   const [showEdit, setShowEdit] = useState(false);
 
@@ -24,9 +26,37 @@ export default function NewsHeader({ news, user }) {
     history.push(`/profile/${author._id}`);
   }
 
-  const handleSubscribe = () => {}
+  const handleSubscribe = () => {
+    let payload = {
+      action: 'sub_news',
+      newsId: news && news._id,
+    };
 
-  const handleUnsubscribe = () => {}
+    SoTApi.doAction(payload).then(data => {
+      if (data.success) {
+        setNotification({ type: 'success', header: 'Subscribed to Newspaper!' });
+        reload(true);
+      } else {
+        setNotification({ type: 'error', header: data.error });
+      }
+    });
+  }
+
+  const handleUnsubscribe = () => {
+    let payload = {
+      action: 'unsub_news',
+      newsId: news && news._id,
+    };
+
+    SoTApi.doAction(payload).then(data => {
+      if (data.success) {
+        setNotification({ type: 'success', header: 'Unsubscribed from Newspaper!' });
+        reload(true);
+      } else {
+        setNotification({ type: 'error', header: data.error });
+      }
+    });
+  }
 
   const handleEdit = () => {}
 

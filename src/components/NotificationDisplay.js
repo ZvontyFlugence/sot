@@ -8,7 +8,7 @@ export default function NotificationDisplay() {
   const clearNotification = () => setNotification(undefined);
 
   return notification ? (
-    <div id='notification-wrapper' style={{ position: 'fixed', top: '10%', right: '1%' }}>
+    <div id='notification-wrapper' style={{ position: 'fixed', top: '10%', right: '1%', minWidth: '20%' }}>
       <Message
         floating
         success={notification.type === 'success'}
