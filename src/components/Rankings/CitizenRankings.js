@@ -139,6 +139,6 @@ export default function CitizenRankings() {
       </Segment>
     </>
   ) : (
-    <Message info visible header='No Citizens Found' />
+    <Message info visible header='No Citizens Found!' />
   );
 }

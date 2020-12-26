@@ -1,8 +1,8 @@
 #app {
   padding: 0 15px;
   background-image: url('../images/background-light.jpg');
-  background-repeat: no-repeat;
-  background-size: cover;
+  background-repeat: repeat-y;
+  background-size: auto;
 }
 
 #body {
@@ -29,6 +29,10 @@
 .flag-inline-right, .flag-inline-left {
   font-size: 1.4rem !important;
   vertical-align: middle;
+}
+
+p {
+  margin: 0 !important;
 }
 
 @media only screen and (min-width: 768px) {

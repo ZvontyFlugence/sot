@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import ReactQuill from 'react-quill';
 
+import { useGetUser } from '../../context/UserContext';
 import { useSetNotification } from '../../context/NotificationContext';
 import SoTApi from '../../services/SoTApi';
 
@@ -14,6 +15,7 @@ const EMPTY_DELTA = { ops: [] };
 export default function WriteArticle(props) {
   const id = props.match.params.id;
   const history = useHistory();
+  const user = useGetUser();
   const setNotification = useSetNotification();
   const [editorValue, setEditorValue] = useState(EMPTY_DELTA);
   const [articleName, setArticleName] = useState('');
@@ -35,11 +37,11 @@ export default function WriteArticle(props) {
     'link', 'image'
   ];
 
-  const handleNameChange = (e, data) => {
+  const handleNameChange = (e, _data) => {
     setArticleName(e.target.value);
   }
 
-  const handleEditorChange = (value, delta, source, editor) => {
+  const handleEditorChange = (_value, _delta, _source, editor) => {
     setEditorValue(editor.getContents())
   }
 
@@ -49,6 +51,7 @@ export default function WriteArticle(props) {
       article: {
         title: articleName,
         content: editorValue,
+        country: user && user.country,
         published: true,
         publishDate: new Date(Date.now()),
       },

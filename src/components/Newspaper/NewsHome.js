@@ -8,7 +8,7 @@ import SoTApi from '../../services/SoTApi';
 
 import { Grid } from "semantic-ui-react";
 
-export default function NewsHome(props) {
+export default function NewsHome() {
   const { id } = useParams();
   const user = useGetUser();
   const [news, setNews] = useState(null);

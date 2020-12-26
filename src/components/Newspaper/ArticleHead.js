@@ -24,7 +24,7 @@ export default function ArticleHead({ news, article, reload }) {
     let payload = {
       action: 'like_article',
       newsId: news && news._id,
-      articleId: article && article.id,
+      articleId: article && article._id,
     };
 
     SoTApi.doAction(payload).then(data => {
@@ -41,7 +41,7 @@ export default function ArticleHead({ news, article, reload }) {
     let payload = {
       action: 'unlike_article',
       newsId: news && news._id,
-      articleId: article && article.id,
+      articleId: article && article._id,
     };
 
     SoTApi.doAction(payload).then(data => {

@@ -2,9 +2,9 @@ import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import { useGetUser, useLoadUser } from '../../context/UserContext';
+import SoTApi from '../../services/SoTApi';
 
 import { Button, Form, Message, Modal, Segment } from "semantic-ui-react";
-import SoTApi from '../../services/SoTApi';
 
 export default function CreateNewspaper() {
   const user = useGetUser();
@@ -44,23 +44,23 @@ export default function CreateNewspaper() {
             header='Insufficient Funds'
           />
           <div>
-          <p>
-            Cost:
-            <span style={{ float: 'right' }}>
-              {Number.parseInt('5').toFixed(2)}
-              &nbsp;
-              <i className='sot-coin' />
-            </span>
-          </p>
-          <p>
-            You have:
-            <span style={{ float: 'right' }}>
-              {user.gold.toFixed(2)}
-              &nbsp;
-              <i className='sot-coin' />
-            </span>
-          </p>
-        </div>
+            <p>
+              Cost:
+              <span style={{ float: 'right' }}>
+                {Number.parseInt('5').toFixed(2)}
+                &nbsp;
+                <i className='sot-coin' />
+              </span>
+            </p>
+            <p>
+              You have:
+              <span style={{ float: 'right' }}>
+                {user.gold.toFixed(2)}
+                &nbsp;
+                <i className='sot-coin' />
+              </span>
+            </p>
+          </div>
         </Form>
       </Modal.Content>
       <Modal.Actions>

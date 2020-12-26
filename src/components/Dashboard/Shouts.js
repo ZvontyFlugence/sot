@@ -120,6 +120,18 @@ export default function Shouts() {
     </Menu.Item>
   ) : 'Country';
 
+  const partyTabHeader = user.party === 0 ? (
+    <Menu.Item key='partyTab' link disabled>
+      Party
+    </Menu.Item>
+  ) : 'Party';
+
+  const unitTabHeader = user.unit === 0 ? (
+    <Menu.Item key='unitTab' link disabled>
+      Unit
+    </Menu.Item>
+  ) : 'Unit';
+
   const shoutBox = (
     <Form>
       <Form.TextArea
@@ -161,8 +173,8 @@ export default function Shouts() {
   const panes = () => [
     { menuItem: 'Global', render: () => <Tab.Pane className='hide-tab-pane'>{shoutContent}</Tab.Pane> },
     { menuItem: countryTabHeader, render: () => <Tab.Pane className='hide-tab-pane'>{shoutContent}</Tab.Pane> },
-    { menuItem: 'Party', render: () => <Tab.Pane className='hide-tab-pane'>{shoutContent}</Tab.Pane> },
-    { menuItem: 'Unit', render: () => <Tab.Pane className='hide-tab-pane'>{shoutContent}</Tab.Pane> }
+    { menuItem: partyTabHeader, render: () => <Tab.Pane className='hide-tab-pane'>{shoutContent}</Tab.Pane> },
+    { menuItem: unitTabHeader, render: () => <Tab.Pane className='hide-tab-pane'>{shoutContent}</Tab.Pane> }
   ];
 
   return (

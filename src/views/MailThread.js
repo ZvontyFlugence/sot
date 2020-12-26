@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-// import { useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import moment from 'moment';
 
 import { useSetNotification } from '../context/NotificationContext';
@@ -11,6 +11,7 @@ import SoTApi from '../services/SoTApi';
 
 export default function MailThread(props) {
   const threadId = props.match.params.id;
+  const history = useHistory();
   const user = useGetUser();
   const loadUser = useLoadUser();
   const setNotification = useSetNotification();
@@ -86,7 +87,7 @@ export default function MailThread(props) {
                           <Comment key={`${msg.from}-${i}`}>
                             <Comment.Avatar as='a' src={from.image} />
                             <Comment.Content>
-                              <Comment.Author as='a'>{ from.displayName }</Comment.Author>
+                              <Comment.Author as='a' onClick={() => history.push(`/profile/${from._id}`)}>{ from.displayName }</Comment.Author>
                               <Comment.Metadata>
                                 <span>{ moment(msg.timestamp).fromNow() }</span>
                               </Comment.Metadata>
@@ -114,7 +115,7 @@ export default function MailThread(props) {
                   <List style={{ display: 'flex', justifyContent: 'center' }}>
                     {participants.filter(u => u._id !== user._id).map(u => (
                       <List.Item key={u._id}>
-                        <Label size='small'>
+                        <Label size='small' onClick={() => history.push(`/profile/${u._id}`)}>
                           <img src={u.image} alt='' />
                           { u.displayName }
                         </Label>

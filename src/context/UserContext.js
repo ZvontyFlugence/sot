@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useLayoutEffect, useState } from 'react';
 import SoTApi from '../services/SoTApi';
 
 export const UserContext = createContext();
@@ -28,6 +28,20 @@ export const useLoadUser = () => {
 
 export default function UserContextProvider(props) {
   const [user, setUser] = useState(null);
+
+  useLayoutEffect(() => {
+    let timer;
+    setTimeout(() => {
+      timer = setInterval(() => {
+        SoTApi.validate().then(data => {
+          if (!data.err && data.user) {
+            setUser(data.user);
+          }
+        }); 
+      }, 120000);
+    }, 60000);
+    return () => clearInterval(timer);
+  }, []);
 
   return (
     <UserContext.Provider value={{ user, setUser }}>

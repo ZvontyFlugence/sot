@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import ReactQuill from 'react-quill';
 
+import { useGetUser } from '../../context/UserContext';
 import { useSetNotification } from '../../context/NotificationContext';
 import SoTApi from '../../services/SoTApi';
 
@@ -12,6 +13,7 @@ import 'react-quill/dist/quill.snow.css';
 export default function EditArticle() {
   const { newsId, articleId } = useParams();
   const history = useHistory();
+  const user = useGetUser();
   const setNotification = useSetNotification();
   const [article, setArticle] = useState(null);
   const [reload, setReload] = useState(true);
@@ -59,6 +61,7 @@ export default function EditArticle() {
         ...article,
         published: true,
         publishDate: new Date(Date.now()),
+        country: user && user.country,
       },
     };
 

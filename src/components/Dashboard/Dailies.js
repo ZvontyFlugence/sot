@@ -1,9 +1,10 @@
 import { useHistory } from 'react-router-dom';
-import { Button, Checkbox, Grid, Segment } from 'semantic-ui-react';
 
 import { useGetUser, useLoadUser } from '../../context/UserContext';
 import { useSetNotification } from '../../context/NotificationContext';
 import SoTApi from '../../services/SoTApi';
+
+import { Button, Checkbox, Grid, Icon, Segment } from 'semantic-ui-react';
 
 export default function Dailies() {
   const history = useHistory();
@@ -37,7 +38,8 @@ export default function Dailies() {
   return (
     <Segment raised>
       <Grid>
-        <Grid.Row style={{ paddingLeft: '10%' }}>
+        <Grid.Row style={{ paddingLeft: '10px' }}>
+          <Icon name='tasks' style={{ fontSize: '1.5rem'}} />
           <span style={{ fontSize: '1.5rem' }}>Daily Tasks</span>
         </Grid.Row>
         <Grid.Row columns={2}>

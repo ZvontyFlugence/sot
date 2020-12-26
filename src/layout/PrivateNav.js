@@ -1,4 +1,5 @@
 import { useHistory } from 'react-router-dom';
+import { format, addMinutes } from 'date-fns';
 
 import { useGetUser, useSetUser } from '../context/UserContext';
 import '../styles/layout.scss';
@@ -49,13 +50,14 @@ export default function PrivateNav() {
       <Dropdown item text='Social' floating>
         <Dropdown.Menu>
           <Dropdown.Item text='My Country' onClick={() => history.push(`/country/${user && user.country}`)} />
+          <Dropdown.Item text='Elections' onClick={() => history.push('/elections/results', { type: 0, country: (user && user.country) || 1 })} />
           <Dropdown.Item text='Rankings' onClick={() => history.push('/rankings')} />
         </Dropdown.Menu>
       </Dropdown>
       <Menu.Item name='World Map' onClick={() => history.push('/world')} />
       <Menu.Item>
         <Icon name='calendar alternate outline' />
-        <span>{date.toDateString()}</span>
+        <span>{ format(addMinutes(date, date.getTimezoneOffset()), 'MMM dd, yyyy') }</span>
       </Menu.Item>
       <Menu.Item>
         <Icon name='clock outline' />
@@ -108,7 +110,7 @@ export default function PrivateNav() {
             <Dropdown.Item onClick={handleLogout}>Logout</Dropdown.Item>
             <Dropdown.Item>
               <Icon name='calendar alternate outline' />
-              <span>{date.toDateString()}</span>
+              <span>{date.toUTCString()}</span>
             </Dropdown.Item>
             <Dropdown.Item>
               <Icon name='clock outline' />

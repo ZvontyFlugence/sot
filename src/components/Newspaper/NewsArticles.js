@@ -53,7 +53,7 @@ export default function NewsArticles({ news }) {
                       <List.Content floated='right'>
                         <span><strong>{ (article.likes && article.likes.length) || 0 } LIKES</strong></span>
                       </List.Content>
-                      <List.Content className='link' onClick={() => history.push(`/newspaper/${news._id}/article/${article.id}`)}>
+                      <List.Content className='link' onClick={() => history.push(`/newspaper/${news._id}/article/${article._id}`)}>
                         <List.Header>
                           { article.title }
                           {

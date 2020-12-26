@@ -4,6 +4,7 @@ import { useHistory } from 'react-router-dom';
 
 import { useSetNotification } from '../context/NotificationContext';
 import Layout from '../layout/Layout';
+import { pSBC } from '../util/config';
 import constants from '../util/constants';
 import SoTApi from '../services/SoTApi';
 
@@ -29,7 +30,7 @@ export default function World() {
     if (resource.css) {
       return (
         <span style={{ float: 'right' }}>
-          { resource.label }
+          { resource.quality } { resource.label }
           <i className={resource.css} style={{ marginLeft: '10px', verticalAlign: 'middle' }} />
         </span>
       );
@@ -83,7 +84,6 @@ export default function World() {
             let polygon = new google.maps.Polygon({ paths, strokeWeight: 1, fillColor: region.owner.color, fillOpacity: 0.9 });
             polygon.addListener('click', () => history.push(`/region/${region._id}`));
             polygon.addListener('mouseover', () => {
-              // display notification
               setNotification({
                 type: 'info',
                 header: (
@@ -109,10 +109,14 @@ export default function World() {
                   </div>
                 ),
               });
+
+              // Highlight
+              polygon.setOptions({ fillColor: pSBC(0.3, region.owner.color) });
+
             });
             polygon.addListener('mouseout', () => {
-              // remove notification
               setNotification(undefined);
+              polygon.setOptions({ fillColor: region.owner.color });
             });
             return polygon;
           }));

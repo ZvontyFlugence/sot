@@ -29,32 +29,29 @@ export default function Settings() {
   const handleUpload = async e => {
     e.preventDefault();
 
-    await fetch(file.objectURL)
-      .then(img => img.blob())
-      .then(blob => {
-        let reader = new FileReader();
-        reader.readAsDataURL(blob);
-        reader.onloadend = () => {
-          let base64 = reader.result;
-          SoTApi.doAction({ action: 'upload', image: base64 })
-            .then(data => {
-              if (data.success) {
-                setNotification({
-                  type: 'success',
-                  header: 'File Uploaded',
-                  content: 'Profile Picture uploaded'
-                });
-                loadUser();
-              } else {
-                setNotification({
-                  type: 'error',
-                  header: 'File Upload Failed',
-                  content: 'Failed to upload profile picture',
-                });
-              }
+    let reader = new FileReader();
+    reader.onloadend = () => {
+      let base64 = reader.result;
+      SoTApi.doAction({ action: 'upload', image: base64 })
+        .then(data => {
+          if (data.success) {
+            setNotification({
+              type: 'success',
+              header: 'File Uploaded',
+              content: 'Profile Picture uploaded'
             });
-        }
-      });
+            loadUser();
+          } else {
+            setNotification({
+              type: 'error',
+              header: 'File Upload Failed',
+              content: 'Failed to upload profile picture',
+            });
+          }
+        });
+    }
+
+    reader.readAsDataURL(file);
   };
 
   const updateDesc = () => {

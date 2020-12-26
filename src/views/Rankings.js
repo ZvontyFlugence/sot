@@ -1,13 +1,17 @@
 import { useState } from 'react';
+import { useLocation } from 'react-router-dom';
 
 import CitizenRankings from '../components/Rankings/CitizenRankings';
 import CountryRankings from '../components/Rankings/CountryRankings';
+import PartyRankings from '../components/Rankings/PartyRankings';
+import NewsRankings from '../components/Rankings/NewsRankings';
 import Layout from '../layout/Layout';
 
 import { Menu, Segment } from 'semantic-ui-react';
 
 export default function Rankings() {
-  const [active, setActive] = useState('citizens');
+  const location = useLocation();
+  const [active, setActive] = useState((location.state && location.state.tab) || 'citizens');
 
   const getTabContent = () => {
     switch(active) {
@@ -15,6 +19,10 @@ export default function Rankings() {
         return <CitizenRankings />;
       case 'countries':
         return <CountryRankings />;
+      case 'newspapers':
+        return <NewsRankings />;
+      case 'parties':
+        return <PartyRankings />;
       default:
         return <></>;
     }
@@ -39,7 +47,6 @@ export default function Rankings() {
             name='parties'
             active={active === 'parties'}
             onClick={(_, { name }) => setActive(name)}
-            disabled
           />
           <Menu.Item
             name='armies'
@@ -51,7 +58,6 @@ export default function Rankings() {
             name='newspapers'
             active={active === 'newspapers'}
             onClick={(_, { name }) => setActive(name)}
-            disabled
           />
         </Menu>
 

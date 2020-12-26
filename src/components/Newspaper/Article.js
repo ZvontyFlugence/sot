@@ -22,16 +22,10 @@ export default function Article() {
                 history.push(`/newspaper/${newsId}/article/${articleId}/edit`);
               }
               setArticle(data.article);
+              setNewspaper(data.newspaper);
             }
-          });
-        
-        SoTApi.getNewspaper(newsId).then(data => {
-          if (data.news) {
-            setNewspaper(data.news);
-          }
-        });
-
-        setReload(false);
+            setReload(false);
+          });        
       }
     }
   }, [newsId, articleId, history, reload]);

@@ -5,7 +5,7 @@ import { format } from 'date-fns';
 import { useGetUser } from '../../context/UserContext';
 import SoTApi from '../../services/SoTApi';
 
-import { Grid, List, Image, Segment, Statistic, Message } from 'semantic-ui-react';
+import { Grid, List, Icon, Image, Segment, Statistic, Message } from 'semantic-ui-react';
 
 export default function News() {
   const history = useHistory();
@@ -29,7 +29,8 @@ export default function News() {
   return (
     <Segment raised>
       <Grid>
-        <Grid.Row style={{ paddingLeft: '10%' }}>
+        <Grid.Row style={{ paddingLeft: '10px' }}>
+          <Icon name='newspaper outline' style={{ fontSize: '1.5rem' }} />
           <span style={{ fontSize: '1.5rem' }}>News</span>
         </Grid.Row>
         <Grid.Column width={16} style={{ marginTop: 0, paddingTop: 0 }}>
@@ -38,7 +39,7 @@ export default function News() {
               <List divided relaxed selection verticalAlign='middle'>
                 {
                   articles.map((article, idx) => (
-                    <List.Item key={idx} onClick={() => goToArticle(article.publisher._id, article.id)}>
+                    <List.Item key={idx} onClick={() => goToArticle(article.publisher._id, article._id)}>
                       <List.Content floated='right'>
                         <Statistic label='Likes' value={article.likes.length} size='tiny' />
                       </List.Content>
