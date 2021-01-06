@@ -44,11 +44,12 @@ function CreatePartyModal(props) {
   const [name, setName] = useState('');
   const [social, setSocial] = useState('');
   const [economic, setEconomic] = useState('');
+  const [color, setColor] = useState('#777777');
 
   const handleCreate = () => {
     let payload = {
       action: 'create_party',
-      party: { name, social, economic },
+      party: { name, social, economic, color },
     };
 
     SoTApi.doAction(payload).then(data => {
@@ -81,6 +82,12 @@ function CreatePartyModal(props) {
             options={constants.PARTY_ECONOMIC_VIEWS}
             value={economic}
             onChange={(_, { value }) => setEconomic(value)}
+          />
+          <Form.Input
+            type='text'
+            label='Party Color'
+            value={color}
+            onChange={(_, { value }) => setColor(value)}
           />
           <Message
             warning

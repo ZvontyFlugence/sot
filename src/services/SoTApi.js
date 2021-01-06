@@ -47,6 +47,7 @@ SoTApi.getJobOffers = id => client.get(`/countries/${id}/jobs`);
 SoTApi.getProductOffers = id => client.get(`/countries/${id}/goods`);
 SoTApi.getCountryArticles = id => client.get(`/countries/${id}/articles`);
 SoTApi.getCountryParties = id => client.get(`/countries/${id}/parties`);
+SoTApi.getCountryPoliticans = id => client.get(`/countries/${id}/politicians`);
 
 // News
 SoTApi.getNewspaper = id => client.get(`/news/${id}`);

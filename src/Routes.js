@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { BrowserRouter as Router, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 
 import PublicRoute from './guards/PublicRoute';
 import PrivateRoute from './guards/PrivateRoute';
@@ -15,6 +15,7 @@ import Alerts from './views/Alerts';
 import Company from './views/Company';
 import Country from './views/Country';
 import Dashboard from './views/Dashboard';
+import Election from './views/Election';
 import ElectionResults from './views/ElectionResults';
 import Mail from './views/Mail';
 import MailThread from './views/MailThread';
@@ -41,7 +42,7 @@ export default function Routes() {
         if (!data.err) {
           setUser(data.user);
         }
-      })
+      });
     }
   }, [user, setUser]);
 
@@ -58,6 +59,7 @@ export default function Routes() {
             <PrivateRoute path='/company/:id' component={Company} />
             <PrivateRoute path='/country/:id' component={Country} />
             <PrivateRoute path='/dashboard' component={Dashboard} />
+            <PrivateRoute path='/election' component={Election} />
             <PrivateRoute path='/elections/results' component={ElectionResults} />
             <PrivateRoute path='/home' component={MyHome} />
             <PrivateRoute exact path='/mail' component={Mail} />
@@ -69,7 +71,10 @@ export default function Routes() {
             <PrivateRoute path='/rankings' component={Rankings} />
             <PrivateRoute path='/settings' component={Settings} />
             <PrivateRoute path='/world' component={World} />
-            <PublicRoute path='*' component={NotFound} />
+            <Route path='/404' component={NotFound} />
+            <Route path='/'>
+              <Redirect to='/404' />
+            </Route>
           </Switch>
         </div>
         <Footer />

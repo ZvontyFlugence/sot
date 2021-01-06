@@ -30,6 +30,8 @@ export default function PrivateDetails(props) {
   }
 
   const handleEditEmployee = employee => {
+    if (employee._id === ceo._id) return;
+    
     setSelectedEmployee(employee);
     setShowEditEmpModal(true);
   }

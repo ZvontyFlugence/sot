@@ -32,8 +32,7 @@ export default function Members(props) {
       case party.vp:
         return 'Party VP';
       default:
-        if (party.congressMembers.includes(memberId))
-          return 'Congress Member';
+         // return 'Congress Member';
         return 'Member';
     }
   }
@@ -99,7 +98,7 @@ function MemberItem(props) {
 
   return (
     <>
-      <List.Item onContextMenu={party.president !== member._id && party.vp !== member._id && show} onClick={() => history.push(`/profile/${member._id}`)}>
+      <List.Item onContextMenu={party.president !== member._id && party.vp !== member._id ? show : undefined} onClick={() => history.push(`/profile/${member._id}`)}>
         <List.Content floated='right'>
           <Label color={getRoleColor(role)} content={role} />
         </List.Content>

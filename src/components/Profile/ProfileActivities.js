@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 
 import SoTApi from '../../services/SoTApi';
 
@@ -6,8 +7,10 @@ import { Accordion, Card, Icon, Image } from 'semantic-ui-react';
 
 export default function ProfileActivities(props) {
   const { profile } = props;
+  const history = useHistory();
   const [job, setJob] = useState(null);
   const [newspaper, setNewspaper] = useState(null);
+  const [party, setParty] = useState(null);
   const [active, setActive] = useState(-1);
 
   useEffect(() => {
@@ -23,6 +26,14 @@ export default function ProfileActivities(props) {
       SoTApi.getNewspaper(profile.newspaper).then(data => {
         if (data.news) {
           setNewspaper(data.news);
+        }
+      });
+    }
+
+    if (profile && profile.party > 0) {
+      SoTApi.getParty(profile.party).then(data => {
+        if (data.party) {
+          setParty(data.party);
         }
       });
     }
@@ -43,7 +54,18 @@ export default function ProfileActivities(props) {
     setActive(newIndex);
   }
 
-  const party = profile.party > 0 && (
+  const getPartyRole = () => {
+    switch (profile._id) {
+      case party.president:
+        return 'Party President';
+      case party.vp:
+        return 'Party Vice President';
+      default:
+        return 'Member';
+    }
+  }
+
+  const politics = profile.party > 0 && (
     <>
       <Accordion.Title
         style={{ textAlign: 'left' }}
@@ -55,7 +77,16 @@ export default function ProfileActivities(props) {
         Party
       </Accordion.Title>
       <Accordion.Content active={active === 0}>
-
+        {
+          party && (
+            <div style={{ cursor: 'pointer' }} onClick={() => history.push(`/party/${party._id}`)}>
+              <div>{ party.name }</div>
+              <Image src={party.image} alt='' size='tiny' />
+              <br />
+              { getPartyRole() }
+            </div>
+          )
+        }
       </Accordion.Content>
     </>
   );
@@ -91,8 +122,8 @@ export default function ProfileActivities(props) {
       <Accordion.Content active={active === 2}>
         {
           newspaper && (
-            <div>
-              { newspaper.name }
+            <div style={{ cursor: 'pointer' }} onClick={() => history.push(`/newspaper/${newspaper._id}`)}>
+              <div>{ newspaper.name }</div>
               <Image src={newspaper.image} alt='' size='tiny' />
               <br />
               {
@@ -119,8 +150,8 @@ export default function ProfileActivities(props) {
       <Accordion.Content active={active === 3}>
       {
         job && (
-          <div>
-            { job.name }
+          <div style={{ cursor: 'pointer' }} onClick={() => history.push(`/company/${job._id}`)}>
+            <div>{ job.name }</div>
             <Image src={job.image} alt='' size='tiny' />
             <br />
             {
@@ -140,7 +171,7 @@ export default function ProfileActivities(props) {
       </Card.Content>
       <Card.Content>
           <Accordion fluid styled>
-            { party }
+            { politics }
             { unit }
             { news }
             { work }

@@ -3,6 +3,8 @@ import { useLocation } from 'react-router-dom';
 
 import Demographics from './Demographics';
 import Regions from './Regions';
+import Government from './Government';
+import Laws from './Laws';
 
 import { Tab } from 'semantic-ui-react';
 
@@ -14,10 +16,10 @@ export default function CountryBody(props) {
   const panes = [
     { menuItem: 'Demographics', render: () => <Demographics /> },
     { menuItem: 'Regions', render: () => <Regions country={country} /> },
-    { menuItem: 'Government' },
+    { menuItem: 'Government', render: () => <Government country={country} /> },
     { menuItem: 'Economy' },
     { menuItem: 'Military' },
-    { menuItem: 'Laws' },
+    { menuItem: 'Laws', render: () => <Laws country={country} /> },
   ];
 
   const handleTabChange = (_, { activeIndex }) => {

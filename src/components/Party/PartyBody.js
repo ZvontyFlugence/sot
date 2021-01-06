@@ -1,5 +1,7 @@
 import Members from './Members';
 import PartyElections from './PartyElections';
+import CongressElections from './CongressElections';
+import CountryElections from './CountryElections';
 
 import { Tab } from 'semantic-ui-react';
 
@@ -8,10 +10,12 @@ export default function PartyBody(props) {
 
   const panes = [
     { menuItem: 'Members', render: () => <Members party={party} setReload={setReload} /> },
-    { menuItem: 'Party President Elections', render: () => <PartyElections party={party} setReload={setReload} /> },
-    { menuItem: 'Congress Elections', render: () => <></> },
-    { menuItem: 'Country President Elections', render: () => <></> },
+    { menuItem: 'Party Elections', render: () => <PartyElections party={party} setReload={setReload} /> },
+    { menuItem: 'Congress Elections', render: () => <CongressElections party={party} setReload={setReload} /> },
+    { menuItem: 'Country Elections', render: () => <CountryElections party={party} setReload={setReload} /> },
   ];
+
+  
 
   return (
     <Tab

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { format } from 'date-fns';
+import { format, addMonths } from 'date-fns';
 
 import { useSetNotification } from '../../context/NotificationContext';
 import { useGetUser, useLoadUser } from '../../context/UserContext';
@@ -106,8 +106,18 @@ export default function PartyElections(props) {
   }
 
   const goToElectionResults = () => {
-    let date = format(new Date(Date.now()), 'MMM yyyy');
-    history.push('/elections/results', { type: 2, country: party.country, party: party._id, date: date });
+    let date = new Date(Date.now());
+
+    if (date.getUTCDate() <= 25) {
+      date = addMonths(date, -1);
+    }
+    
+    history.push('/elections/results', {
+      type: 2,
+      country: party.country,
+      party: party._id,
+      date: format(date, 'MMM yyyy'),
+    });
   }
 
   return party && (

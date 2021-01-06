@@ -33,11 +33,16 @@ export default function UserContextProvider(props) {
     let timer;
     setTimeout(() => {
       timer = setInterval(() => {
-        SoTApi.validate().then(data => {
-          if (!data.err && data.user) {
-            setUser(data.user);
-          }
-        }); 
+        if (localStorage.getItem('token')) {
+          SoTApi.setToken(localStorage.getItem('token'));
+          SoTApi.validate().then(data => {
+            if (!data.err && data.user) {
+              setUser(data.user);
+            } else {
+              alert('Auth Validation Failed:\n', data.err || data.error);
+            }
+          }); 
+        }
       }, 120000);
     }, 60000);
     return () => clearInterval(timer);

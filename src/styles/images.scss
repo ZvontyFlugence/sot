@@ -1,4 +1,4 @@
-.sot-coin, .sot-iron, .sot-bread, .sot-wheat, .sot-str {
+.sot-coin, .sot-iron, .sot-bread, .sot-wheat, .sot-str, .sot-oil, .sot-steel, .sot-aluminum, .sot-uranium {
   width: 25px;
   padding: 0px;
   margin: 0px auto;
@@ -23,4 +23,20 @@
 
 .sot-str {
   content: url('../images/assets/strong.svg');
+}
+
+.sot-oil {
+  content: url('../images/assets/oil.svg');
+}
+
+.sot-uranium {
+  content: url('../images/assets/uranium.svg');
+}
+
+.sot-aluminum {
+  content: url('../images/assets/aluminum.svg');
+}
+
+.sot-steel {
+  content: url('../images/assets/steel.svg');
 }
